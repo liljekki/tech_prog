@@ -24,7 +24,7 @@ args '-u=\"root\"'
 }
 steps {
 
-sh 'apk add --update python3 py-pip!
+sh 'apk add --update python3 py-pip!'
 sh 'pip install unittest2'
 sh 'pip install xmirunner'
 sh 'python3 app_tests.py'
