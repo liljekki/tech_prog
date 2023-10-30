@@ -26,8 +26,7 @@ steps {
 
 sh 'apk add --update python3 py-pip!'
 sh 'pip install unittest2'
-sh 'pip install xmirunner'
-sh 'python3 app_tests.py'
+sh 'python3 lab2_test.py'
 }
 post {
 always {
@@ -43,4 +42,5 @@ echo "Oooppss!!! Tests failed!"
 }// post
 }// stage Test
 }// stages
+}
 }
