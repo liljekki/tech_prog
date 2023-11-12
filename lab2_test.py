@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 import lab_2
 import io
-
+from collections.abc import MutableMapping
 class TestNotebook(unittest.TestCase):
     def setUp(self):
         self.notebook = lab_2.Notebook()
