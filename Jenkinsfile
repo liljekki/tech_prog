@@ -23,6 +23,7 @@ pipeline {
             steps {
                 sh 'apk add --update python3 py-pip'
                 sh 'pip install unittest2==1.1.0'
+                sh 'pip install --upgrade pip wheel setuptools requests'
                 sh 'pip install xmlrunner'
                 sh 'python3 lab2_test.py'
             }
