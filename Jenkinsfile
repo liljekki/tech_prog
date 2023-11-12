@@ -22,7 +22,7 @@ pipeline {
             }
             steps {
                 sh 'apk add --update python3 py-pip'
-                sh 'pip install unittest2'
+                sh 'pip install --upgrade unittest2'
                 sh 'pip install xmlrunner'
                 sh 'python3 lab2_test.py'
             }
