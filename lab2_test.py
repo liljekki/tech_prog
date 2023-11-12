@@ -36,13 +36,11 @@ class TestNotebook(unittest.TestCase):
             self.notebook.add_note("", "Вміст нотатки 1")
 
 if __name__ == '__main__':
-    try:
-    # 👇️ using Python 3.10+
-        from xmlrunner import XMLTestRunner
-    except ImportError:
-    # 👇️ using Python 3.10-
-        from collections.abc import MutableMapping
-        from collections import MutableMapping
+    import collections.abc
+    import collections
+    collections.MutableMapping = collections.abc.MutableMapping
+    from xmlrunner import XMLTestRunner
+
     
     runner = XMLTestRunner(output='test-reports')
     unittest.main(testRunner=runner)
