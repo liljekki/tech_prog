@@ -36,7 +36,7 @@ class TestNotebook(unittest.TestCase):
             self.notebook.add_note("", "Вміст нотатки 1")
 
 if __name__ == '__main__':
-    # import xmlrunner
-    # runner = xmlrunner.XMLTestRunner(output='./jenkins/test-reports')
-    # unittest.main(testRunner=runner)
+    import xmlrunner
+    runner = xmlrunner.XMLTestRunner(output='./jenkins/test-reports')
+    unittest.main(testRunner=runner)
     unittest.main()
