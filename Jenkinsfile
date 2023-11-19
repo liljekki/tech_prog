@@ -71,7 +71,7 @@ pipeline {
                 script {
                     def imageTag = readFile 'docker-image-tag'
                     // Створити Docker образ та позначити його тегом
-                    sh "docker build -t ${imageTag} /var/jenkins_home/workspace/new_pipe"
+                    sh "docker build -t ${imageTag} -f Dockerfile ."
 
                     withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
                         sh "docker login --username=${DOCKER_HUB_USERNAME} --password=${DOCKER_HUB_PASSWORD}"
