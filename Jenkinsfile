@@ -73,13 +73,14 @@ pipeline {
             sh "docker build -t ${imageTag} -f Dockerfile ."
 
             // Використання облікових даних Docker Hub для логіну
-            withCredentials([string(credentialsId: 'your_credentials_id', variable: 'DOCKERHUB_TOKEN')]) {
-                sh 'echo $DOCKERHUB_TOKEN | docker login -u your_username --password-stdin'
+            withCredentials([usernamePassword(credentialsId: 'your_credentials_id', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                sh 'docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD'
                 sh "docker push ${imageTag}"
             }
         }
     }
 }
+
 
 
 
