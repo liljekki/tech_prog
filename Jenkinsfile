@@ -67,19 +67,20 @@ pipeline {
             }
         }
         stage('Build and Push') {
-        steps {
+    steps {
         script {
             def imageTag = readFile 'docker-image-tag'
             sh "docker build -t ${imageTag} -f Dockerfile ."
 
             // Використання облікових даних Docker Hub для логіну
-            withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKERHUB_CREDENTIALS_USR', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW')]) {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            withCredentials([string(credentialsId: 'your_credentials_id', variable: 'DOCKERHUB_TOKEN')]) {
+                sh 'echo $DOCKERHUB_TOKEN | docker login -u your_username --password-stdin'
                 sh "docker push ${imageTag}"
             }
         }
     }
 }
+
 
 
         // stage('Docker Hub Login') {
