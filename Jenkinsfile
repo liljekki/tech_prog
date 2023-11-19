@@ -47,6 +47,56 @@ pipeline {
             }
         }
 
+        stage('Docker Build'){
+            steps {
+                sh 'pwd'
+                sh 'docker build -t lab3 /var/jenkins_home/workspace/new_pipe'
+                // sh 'docker run lab3 test'
+            }
+        }
+        stage('Build Docker Image Info') {
+            steps {
+                script {
+                    // Отримати хеш коміту для тегу образу
+                    def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    // Створити тег образу
+                    def imageTag = "lab3:${commitHash}"
+                    // Записати тег образу у файл
+                    writeFile file: 'docker-image-tag', text: imageTag
+                }
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    def imageTag = readFile 'docker-image-tag'
+                    // Створити Docker образ та позначити його тегом
+                    sh "docker build -t ${imageTag} /var/jenkins_home/workspace/new_pipe"
+                }
+            }
+        }
+        stage('Docker Hub Login') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
+                        sh "docker login --username=${DOCKER_HUB_USERNAME} --password=${DOCKER_HUB_PASSWORD}"
+                        def imageTag = readFile 'docker-image-tag'
+                        // Надіслати Docker образ на Docker Hub
+                        sh "docker push ${imageTag}"
+                    }
+                }
+            }
+        }
+        // stage('Push Docker Image') {
+        //     steps {
+        //         script {
+        //             def imageTag = readFile 'docker-image-tag'
+        //             // Надіслати Docker образ на Docker Hub
+        //             sh "docker push ${imageTag}"
+        //             // sh "docker push ageevprunich/jenkins_lab3:tagname"
+        //         }
+        //     }
+        // }
         
     }
 }
