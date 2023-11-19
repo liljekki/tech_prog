@@ -66,22 +66,22 @@ pipeline {
                 }
             }
         }
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    def imageTag = readFile 'docker-image-tag'
-                    // Створити Docker образ та позначити його тегом
-                    sh "docker build -t ${imageTag} -f Dockerfile ."
+        stage('Build and Push') {
+        steps {
+        script {
+            def imageTag = readFile 'docker-image-tag'
+            sh "docker build -t ${imageTag} -f Dockerfile ."
 
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
-                        sh "docker login --username=${DOCKER_HUB_USERNAME} --password=${DOCKER_HUB_PASSWORD}"
-                        // def imageTag = readFile 'docker-image-tag'
-                        // Надіслати Docker образ на Docker Hub
-                        sh "docker push ${imageTag}"
-                    }
-                }
+            // Використання облікових даних Docker Hub для логіну
+            withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKERHUB_CREDENTIALS_USR', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW')]) {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh "docker push ${imageTag}"
             }
         }
+    }
+}
+
+
         // stage('Docker Hub Login') {
         //     steps {
         //         script {
