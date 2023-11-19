@@ -3,7 +3,7 @@ pipeline {
         timestamps()
     }
     
-    agent none
+    agent any
     
     stages {
         stage('Check scm') {
