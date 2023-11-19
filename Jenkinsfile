@@ -72,31 +72,42 @@ pipeline {
                     def imageTag = readFile 'docker-image-tag'
                     // Створити Docker образ та позначити його тегом
                     sh "docker build -t ${imageTag} /var/jenkins_home/workspace/new_pipe"
-                }
-            }
-        }
-        stage('Docker Hub Login') {
-            steps {
-                script {
+
                     withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
                         sh "docker login --username=${DOCKER_HUB_USERNAME} --password=${DOCKER_HUB_PASSWORD}"
-                        def imageTag = readFile 'docker-image-tag'
+                        // def imageTag = readFile 'docker-image-tag'
                         // Надіслати Docker образ на Docker Hub
                         sh "docker push ${imageTag}"
                     }
                 }
             }
         }
-        // stage('Push Docker Image') {
+        // stage('Docker Hub Login') {
         //     steps {
         //         script {
-        //             def imageTag = readFile 'docker-image-tag'
-        //             // Надіслати Docker образ на Docker Hub
-        //             sh "docker push ${imageTag}"
-        //             // sh "docker push ageevprunich/jenkins_lab3:tagname"
+        //             withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
+        //                 sh "docker login --username=${DOCKER_HUB_USERNAME} --password=${DOCKER_HUB_PASSWORD}"
+        //                 def imageTag = readFile 'docker-image-tag'
+        //                 // Надіслати Docker образ на Docker Hub
+        //                 sh "docker push ${imageTag}"
+        //             }
         //         }
         //     }
         // }
         
+        // stage('Build and Push Docker Image') {
+        //     steps {
+        //         script {
+        //             // Build Docker image
+        //             sh "docker build -t ${DOCKER_IMAGE} -f Dockerfile ."
+        //             // Push Docker image to Docker Hub
+        //             // withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+        //             //     sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+        //             // }
+        //             sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        //             sh "docker push ${DOCKER_IMAGE}"
+        //         }
+        //     }
+        // }
     }
 }
