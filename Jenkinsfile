@@ -70,12 +70,13 @@ pipeline {
     steps {
         script {
             def imageTag = readFile 'docker-image-tag'
-            sh "docker build -t ${imageTag} -f Dockerfile ."
+            def gg = 'liljekki/for_jenkins'
+            sh "docker build -t ${gg} -f Dockerfile ."
 
             // Використання облікових даних Docker Hub для логіну
             withCredentials([usernamePassword(credentialsId: 'your_credentials_id', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                 sh 'docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD'
-                sh "docker push ${imageTag}"
+                sh "docker push ${gg}"
             }
         }
     }
