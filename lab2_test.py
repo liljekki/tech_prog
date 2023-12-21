@@ -25,9 +25,10 @@ class TestNotebook(unittest.TestCase):
             output = mock_stdout.getvalue()
 
         expected_output = (
-            "Note 1:\nTitle: Заголовок 1\nContent: Вміст нотатка 1\n----------\n"
-            "Note 2:\nTitle: Заголовок 2\nContent: Вміст нотатка 2\n----------\n"
-        )
+    "Note 1:\nTitle: Заголовок 1\nContent: 'Вміст нотатка 1'\n----------\n"
+    "Note 2:\nTitle: Заголовок 2\nContent: 'Вміст нотатка 2'\n----------\n"
+)
+
 
         self.assertEqual(output, expected_output)
     
@@ -36,9 +37,9 @@ class TestNotebook(unittest.TestCase):
             self.notebook.add_note("", "Вміст нотатки 1")
 
 if __name__ == '__main__':
-    import collections.abc
-    import collections
-    collections.MutableMapping = collections.abc.MutableMapping
+    # import collections.abc
+    # import collections
+    # collections.MutableMapping = collections.abc.MutableMapping
     from xmlrunner import XMLTestRunner
 
     
